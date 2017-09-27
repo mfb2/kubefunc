@@ -27,9 +27,9 @@ kns <ns>        | Sets Kubernetes namespace
 build <appname>*| Runs docker build.
 kup*            | Installs to Kubernetes
 kdown*          | Uninstalls to Kubernetes
-kdash*          | Opens minikube dashboard
 kcycle*         | Build, Clean & Deploy to Kubernetes
 mkdock          | Points Docker registry to Minikube
+mkdash          | Opens minikube dashboard
 mkcycle <ns>    | Stops and restarts Minikube, namespace optional
 EOM
 }
@@ -46,6 +46,10 @@ function kns() {
 
 function mkdock() {
   eval $(minikube docker-env)
+}
+
+function mkdash() {
+  minikube dashboard
 }
 
 function mkcycle() {
