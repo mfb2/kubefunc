@@ -1,0 +1,68 @@
+#!/bin/bash
+
+###############################################################################
+#
+#  K U B E R N E T E S  E N V I R O N M E N T  C O N F I G U R A T I O N
+#
+###############################################################################
+
+###############################################################################
+#
+#  Function Definitions
+#
+###############################################################################
+
+function khelp () {
+cat << EOM
+
+###############################################################################
+#  K U B E R N E T E S  E N V I R O N M E N T  C O N F I G U R A T I O N
+#  Function Shortcut Help
+#
+#  Note: '*' means not yet implemented
+###############################################################################
+Command         | Description
+-------------------------------------------------------------------------------
+kns <ns>        | Sets Kubernetes namespace
+build <appname>*| Runs docker build.
+kup*            | Installs to Kubernetes
+kdown*          | Uninstalls to Kubernetes
+kdash*          | Opens minikube dashboard
+kcycle*         | Build, Clean & Deploy to Kubernetes
+mkdock          | Points Docker registry to Minikube
+mkcycle <ns>    | Stops and restarts Minikube, namespace optional
+EOM
+}
+
+function kns() {
+  NS=$1
+  if [[ -z $NS ]]; then
+    echo "Usage:"
+    echo "  $ kns <namespace>"
+    exit -1
+  fi
+  kubectl config set-context $(kubectl config current-context) --namespace $NS
+}
+
+function mkdock() {
+  eval $(minikube docker-env)
+}
+
+function mkcycle() {
+  NS=$1
+
+  minikube stop
+  minikube start
+
+  if [[ $NS == "--help" ]]; then
+    echo "Minikube Stop/Restart Utility"
+    echo
+    echo "<namespace> is an optional argument."
+    echo
+    echo "Usage:"
+    echo "  $ mkcycle <namespace>"
+
+  elif [[ ! -z $NS ]]; then
+    kns $NS
+  fi
+}
