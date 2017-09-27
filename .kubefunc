@@ -1,5 +1,6 @@
 #!/bin/bash
 
+eval $(kubectl completion zsh)
 ###############################################################################
 #
 #  K U B E R N E T E S  E N V I R O N M E N T  C O N F I G U R A T I O N
